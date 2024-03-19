@@ -1,0 +1,132 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class Movie
+{
+    public string Title { get; set; }
+    public string Director { get; set; }
+    public List<int> Ratings { get; set; }
+
+    public Movie(string title, string director)
+    {
+        Title = title;
+        Director = director;
+        Ratings = new List<int>();
+    }
+
+    public void AddRating(int rating)
+    {
+        if (rating < 1 || rating > 5)
+        {
+            Console.WriteLine("Рейтинг повинен бути від 1 до 5.");
+            return;
+        }
+
+        Ratings.Add(rating);
+        Console.WriteLine($"Додано рейтинг {rating} для фільму '{Title}'.");
+    }
+
+    public double GetCurrentRating()
+    {
+        if (Ratings.Count == 0)
+            return 0;
+
+        return Math.Round(Ratings.Average(), 1);
+    }
+
+    public override string ToString()
+    {
+        return $"{Title} ({Director}) - Рейтинг: {GetCurrentRating()}";
+    }
+}
+
+class MovieCollection
+{
+    private List<Movie> movies;
+
+    public MovieCollection()
+    {
+        movies = new List<Movie>();
+    }
+
+    public void AddMovie(string title, string director)
+    {
+        movies.Add(new Movie(title, director));
+        Console.WriteLine($"Фільм '{title}' додано до колекції.");
+    }
+
+    public void DisplayAllMoviesWithRatings()
+    {
+        Console.WriteLine("Список фільмів з рейтингами:");
+        foreach (var movie in movies)
+        {
+            Console.WriteLine(movie);
+        }
+    }
+
+    public void RateMovie(string title, int rating)
+    {
+        var movie = movies.FirstOrDefault(m => m.Title.Equals(title, StringComparison.OrdinalIgnoreCase));
+        if (movie != null)
+        {
+            movie.AddRating(rating);
+        }
+        else
+        {
+            Console.WriteLine($"Фільм з назвою '{title}' не знайдено.");
+        }
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Console.WriteLine("Салам!");
+
+        MovieCollection collection = new MovieCollection();
+
+        while (true)
+        {
+            Console.WriteLine("1. Додати фільм");
+            Console.WriteLine("2. Додати рейтинг для існуючого фільму");
+            Console.WriteLine("3. Вивести список фільмів з рейтингами");
+            Console.WriteLine("4. Вийти");
+            Console.Write("Виберіть опцію: ");
+            string option = Console.ReadLine();
+
+            switch (option)
+            {
+                case "1":
+                    Console.WriteLine("Введіть інформацію про фільм:");
+                    Console.Write("Назва фільму: ");
+                    string title = Console.ReadLine();
+                    Console.Write("Режисер: ");
+                    string director = Console.ReadLine();
+                    collection.AddMovie(title, director);
+                    break;
+
+                case "2":
+                    Console.Write("Введіть назву фільму: ");
+                    string movieTitle = Console.ReadLine();
+                    Console.Write("Введіть рейтинг для фільму (від 1 до 5): ");
+                    int rating = int.Parse(Console.ReadLine());
+                    collection.RateMovie(movieTitle, rating);
+                    break;
+
+                case "3":
+                    collection.DisplayAllMoviesWithRatings();
+                    break;
+
+                case "4":
+                    Console.WriteLine("До побачення!");
+                    return;
+
+                default:
+                    Console.WriteLine("Невірний вибір. Спробуйте ще раз.");
+                    break;
+            }
+        }
+    }
+}
