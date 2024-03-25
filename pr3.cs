@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-public class Program
-{
-    public static void Main(string[] args)
-    {
+public class Program{
+    public static void Main(string[] args) {
         List<Vaccination> vaccinations = new List<Vaccination>();
         vaccinations.Add(new OneTimeVaccination("Від грипу щоб не боліти", 5));
         vaccinations.Add(new RecurringVaccination("COVID-19 (ну то понятно, даже нічо говорити не буду)", 18, 80, 1));
@@ -23,8 +21,7 @@ public class Program
                 Console.WriteLine(vaccination.Name);
             }
         }
-        else
-        {
+        else{
             Console.WriteLine("Некоректний вік. Будь ласка, введіть ціле число.");
         }
     }
